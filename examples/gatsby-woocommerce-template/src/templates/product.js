@@ -1,4 +1,5 @@
 import React, { useState, useContext, useMemo } from 'react';
+import { navigate } from 'gatsby';
 import * as styles from './product.module.css';
 
 import Accordion from '../components/Accordion';
@@ -13,6 +14,7 @@ import { addToCart } from '../api/api';
 import CartContext from '../context/CartProvider';
 import { useEffect } from 'react';
 import OptimizedImage from '../components/Image';
+import { isLoggedIn } from '../utils';
 const ProductPage = ({ pageContext }) => {
   const ctxAddItemNotification = useContext(AddItemNotificationContext);
   const showNotification = ctxAddItemNotification.showNotification;
@@ -133,6 +135,11 @@ const ProductPage = ({ pageContext }) => {
                 <div className={styles.addToButtonContainer}>
                   <Button
                     onClick={async () => {
+                      // Check login status before adding to cart
+                      if (!isLoggedIn()) {
+                        navigate('/login');
+                        return;
+                      }
                       if (adding) return;
                       setAdding(true);
                       try {

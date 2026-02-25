@@ -79,6 +79,30 @@ exports.createResolvers = ({
 // https://stackoverflow.com/questions/63124432/how-do-i-configure-mini-css-extract-plugin-in-gatsby
 exports.onCreateWebpackConfig = (helper) => {
   const { stage, actions, getConfig } = helper;
+
+  // Fix node-fetch whatwg-url compatibility issue during SSR build
+  if (stage === 'build-html' || stage === 'develop-html') {
+    actions.setWebpackConfig({
+      module: {
+        rules: [
+          {
+            test: /node-fetch/,
+            use: 'null-loader',
+          },
+        ],
+      },
+      resolve: {
+        alias: {
+          'node-fetch': require.resolve('./src/utils/empty-module.js'),
+          'whatwg-url': require.resolve('./src/utils/empty-module.js'),
+        },
+        fallback: {
+          punycode: false,
+        },
+      },
+    });
+  }
+  
   if (stage === 'develop' || stage === 'build-javascript') {
     const config = getConfig();
     const miniCssExtractPlugin = config.plugins.find(

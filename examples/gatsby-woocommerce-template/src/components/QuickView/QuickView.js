@@ -1,4 +1,5 @@
 import React, { useState, useContext } from 'react';
+import { navigate } from 'gatsby';
 
 import Button from '../Button';
 import AddItemNotificationContext from '../../context/AddItemNotificationProvider';
@@ -9,6 +10,7 @@ import { addToCart } from '../../api/api';
 import CartContext from '../../context/CartProvider';
 import { useEffect } from 'react';
 import OptimizedImage from '../Image';
+import { isLoggedIn } from '../../utils';
 
 const QuickView = (props) => {
   const { close, buttonTitle = 'Add to Bag', product } = props;
@@ -45,6 +47,12 @@ const QuickView = (props) => {
   }, [product])
 
   const handleAddToBag = async () => {
+    // Check login status before adding to cart
+    if (!isLoggedIn()) {
+      close();
+      navigate('/login');
+      return;
+    }
     if (adding) return;
     setAdding(true);
     try {

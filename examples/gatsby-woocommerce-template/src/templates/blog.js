@@ -21,6 +21,8 @@ const processContent = (content) => {
 const BlogDetail = ({ pageContext }) => {
   const { data } = pageContext;
   const category = data.categories?.nodes[0]?.name ?? '';
+  const defaultImage = { sourceUrl: '/blogCover.png' };
+  
   return (
     <Layout>
       <div className={styles.root}>
@@ -29,10 +31,10 @@ const BlogDetail = ({ pageContext }) => {
             <Blog
               category={category}
               title={data.title}
-              image={data.featuredImage.node}
+              image={data.featuredImage?.node || defaultImage}
               alt={''}
             >
-              <div className={styles.content} dangerouslySetInnerHTML={{ __html: processContent(data.content)}}>
+              <div className={styles.content} dangerouslySetInnerHTML={{ __html: processContent(data.content || '')}}>
               </div>
               
             </Blog>

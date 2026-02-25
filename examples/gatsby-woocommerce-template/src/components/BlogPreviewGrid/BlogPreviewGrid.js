@@ -14,7 +14,7 @@ const BlogPreviewGrid = (props) => {
           return (
             <BlogPreview
               key={index}
-              image={blog.featuredImage.node}
+              image={blog.featuredImage?.node || { sourceUrl: '/blogCover.png' }}
               altImage={blog.alt}
               title={blog.title}
               link={`/blog/${blog.slug}`}

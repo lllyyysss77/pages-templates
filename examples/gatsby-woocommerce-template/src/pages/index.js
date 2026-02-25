@@ -29,6 +29,9 @@ const IndexPage = ({ data }) => {
   const highlight = wordpress.highlight?.highlight ?? {};
   const promotion = wordpress.promotion?.promotion ?? {};
 
+  // Default image placeholder
+  const defaultImage = { sourceUrl: '/blogCover.png' };
+
   // Navigation handlers
   const handleShopNavigation = () => {
     navigate('/shop');
@@ -39,7 +42,7 @@ const IndexPage = ({ data }) => {
       {/* Hero Banner Section */}
       <Hero
         maxWidth="500px"
-        image={banner.image.node}
+        image={banner.image?.node || defaultImage}
         title={banner.title}
         subtitle={banner.subtitle}
         ctaText={banner.ctatext}
@@ -78,9 +81,9 @@ const IndexPage = ({ data }) => {
       <div className={styles.highlightContainer}>
         <Container size="large" fullMobile>
           <Highlight
-            image={highlight.mainimage.node}
+            image={highlight.mainimage?.node || defaultImage}
             altImage="highlight image"
-            miniImage={highlight.subImage.node}
+            miniImage={highlight.subImage?.node || defaultImage}
             miniImageAlt="mini highlight image"
             title={highlight.title}
             description={highlight.description}
@@ -93,11 +96,11 @@ const IndexPage = ({ data }) => {
       {/* Promotion Section */}
       <div className={styles.promotionContainer}>
         <Hero
-          image={promotion.backgroundImage.node}
+          image={promotion.backgroundImage?.node || defaultImage}
           title={promotion.title}
         />
         <div className={styles.linkContainers}>
-          <Link to={promotion.buttonUrl}>{promotion.button}</Link>
+          <Link to={promotion.buttonUrl || '/shop'}>{promotion.button}</Link>
         </div>
       </div>
 
